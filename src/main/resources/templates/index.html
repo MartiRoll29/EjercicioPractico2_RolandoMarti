@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragmentos/plantilla :: cabecera('Inicio')}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado('Inicio')}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+
+    <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+        <h2 class="display-6">Bienvenido a MediCare</h2>
+        <p class="lead text-secondary mb-0">
+            Plataforma para administrar los usuarios del sistema, gestionar sus roles y
+            consultar la información de las citas médicas del centro de salud.
+        </p>
+        <hr class="my-4">
+        <div sec:authorize="!isAuthenticated()">
+            <a class="btn btn-primary btn-lg" th:href="@{/login}">
+                <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+            </a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-primary btn-lg" th:href="@{/citas}">
+                <i class="bi bi-calendar-heart"></i> Ver Citas Médicas
+            </a>
+            <a class="btn btn-outline-primary btn-lg" th:href="@{/consultas}">
+                <i class="bi bi-search"></i> Consultas Avanzadas
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card tarjeta-resumen shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary text-uppercase small">Usuarios registrados</h6>
+                    <p class="display-6 mb-0" th:text="${totalUsuarios}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card tarjeta-resumen shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary text-uppercase small">Roles definidos</h6>
+                    <p class="display-6 mb-0" th:text="${totalRoles}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card tarjeta-resumen shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary text-uppercase small">Citas médicas</h6>
+                    <p class="display-6 mb-0" th:text="${totalCitas}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card tarjeta-resumen shadow-sm h-100">
+                <div class="card-body">
+                    <h6 class="text-secondary text-uppercase small">Citas activas</h6>
+                    <p class="display-6 mb-0" th:text="${totalCitasActivas}">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

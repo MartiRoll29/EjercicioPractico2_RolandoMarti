@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-person-plus"></i> <span th:text="${tituloVista}">Formulario</span>
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/admin/usuarios/guardar}" th:object="${usuario}" method="post">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                                   maxlength="150" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email" th:field="*{email}"
+                                   maxlength="200" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="text" class="form-control" id="password" th:field="*{password}"
+                                   maxlength="255" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="identificadorRol" class="form-label">Rol asignado</label>
+                            <select class="form-select" id="identificadorRol" name="identificadorRol" required>
+                                <option value="">-- Seleccione un rol --</option>
+                                <option th:each="opcion : ${listaRoles}"
+                                        th:value="${opcion.id}"
+                                        th:text="${opcion.nombre}"
+                                        th:selected="${usuario.rol != null and usuario.rol.id == opcion.id}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input type="hidden" name="_activo" value="on">
+                            <input class="form-check-input" type="checkbox" id="activo" th:field="*{activo}">
+                            <label class="form-check-label" for="activo">Usuario activo</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-outline-secondary" th:href="@{/admin/usuarios}">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="card-footer bg-light small text-secondary" th:if="${usuario.id == null}">
+                    Al registrar el usuario se enviará automáticamente un correo de bienvenida.
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

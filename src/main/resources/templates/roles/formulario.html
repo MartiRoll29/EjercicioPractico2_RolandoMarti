@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-shield-plus"></i> <span th:text="${tituloVista}">Formulario</span>
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/admin/roles/guardar}" th:object="${rol}" method="post">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-4">
+                            <label for="nombre" class="form-label">Nombre del rol</label>
+                            <input type="text" class="form-control" id="nombre" th:field="*{nombre}"
+                                   maxlength="100" required placeholder="ADMIN / MEDICO / PACIENTE">
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-outline-secondary" th:href="@{/admin/roles}">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

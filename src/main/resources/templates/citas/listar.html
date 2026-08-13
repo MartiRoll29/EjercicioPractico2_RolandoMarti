@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="h4 mb-1"><i class="bi bi-calendar-heart"></i> <span th:text="${tituloVista}">Citas</span></h2>
+            <span class="text-secondary small">
+                Citas activas: <strong th:text="${totalCitasActivas}">0</strong>
+            </span>
+        </div>
+        <a class="btn btn-primary" th:href="@{/citas/nuevo}" sec:authorize="hasAnyRole('ADMIN','MEDICO')">
+            <i class="bi bi-plus-circle"></i> Nueva Cita
+        </a>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" th:if="${mensajeExito}">
+        <span th:text="${mensajeExito}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" th:if="${mensajeError}">
+        <span th:text="${mensajeError}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre del Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Fecha de la Cita</th>
+                    <th>Costo</th>
+                    <th>Estado</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="registro : ${listaCitas}">
+                    <td th:text="${registro.id}">1</td>
+                    <td th:text="${registro.pacienteNombre}">Paciente</td>
+                    <td th:text="${registro.especialidad}">Especialidad</td>
+                    <td th:text="${registro.fecha != null} ? ${#temporals.format(registro.fecha, 'dd/MM/yyyy')} : '-'">-</td>
+                    <td th:text="${registro.costo != null} ? ${#numbers.formatDecimal(registro.costo, 1, 'COMMA', 2, 'POINT')} : '-'">0</td>
+                    <td>
+                        <span class="badge" th:classappend="${registro.activa} ? 'bg-success' : 'bg-secondary'"
+                              th:text="${registro.activa} ? 'Activa' : 'Inactiva'">Activa</span>
+                    </td>
+                    <td class="text-end text-nowrap">
+                        <a class="btn btn-sm btn-outline-secondary"
+                           th:href="@{/citas/detalle/{id}(id=${registro.id})}" title="Ver detalle">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-primary" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
+                           th:href="@{/citas/editar/{id}(id=${registro.id})}" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form class="d-inline" method="post" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
+                              th:action="@{/citas/eliminar/{id}(id=${registro.id})}"
+                              onsubmit="return confirm('¿Desea eliminar esta cita médica?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(listaCitas)}">
+                    <td colspan="7" class="text-center text-secondary py-4">
+                        No hay citas médicas registradas.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

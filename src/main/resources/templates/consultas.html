@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+
+    <h2 class="h4 mb-4"><i class="bi bi-search"></i> Consultas Avanzadas (JPA / Hibernate)</h2>
+
+    <div class="row g-4 mb-4">
+
+        <!-- Consulta 1: por estado -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    Consulta 1 — Citas por estado
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/consultas/estado}" method="post" class="row g-2 align-items-end">
+                        <div class="col-8">
+                            <label for="estadoCita" class="form-label small">Estado de la cita</label>
+                            <select class="form-select" id="estadoCita" name="estadoCita">
+                                <option value="true">Activas</option>
+                                <option value="false">Inactivas</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consulta 2: rango de fechas -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    Consulta 2 — Citas por rango de fechas
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/consultas/rango-fechas}" method="post" class="row g-2 align-items-end">
+                        <div class="col-5">
+                            <label for="desde" class="form-label small">Desde</label>
+                            <input type="date" class="form-control" id="desde" name="desde" required>
+                        </div>
+                        <div class="col-5">
+                            <label for="hasta" class="form-label small">Hasta</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta" required>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary w-100">Ir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consulta 3: especialidad parcial -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    Consulta 3 — Citas por especialidad (coincidencia parcial)
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/consultas/especialidad}" method="post" class="row g-2 align-items-end">
+                        <div class="col-8">
+                            <label for="textoEspecialidad" class="form-label small">Especialidad</label>
+                            <input type="text" class="form-control" id="textoEspecialidad"
+                                   name="textoEspecialidad" placeholder="cardio" required>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consulta 4: usuarios por rol + conteo -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    Consulta 4 — Usuarios por rol asignado
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/consultas/usuarios-rol}" method="post" class="row g-2 align-items-end">
+                        <div class="col-8">
+                            <label for="identificadorRol" class="form-label small">Rol</label>
+                            <select class="form-select" id="identificadorRol" name="identificadorRol" required>
+                                <option th:each="opcion : ${listaRoles}"
+                                        th:value="${opcion.id}" th:text="${opcion.nombre}"></option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary w-100">Consultar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Consulta 5: conteo de citas activas -->
+    <div class="alert alert-info shadow-sm">
+        <i class="bi bi-info-circle"></i>
+        Consulta 5 — Total de citas médicas activas registradas:
+        <strong th:text="${totalCitasActivas}">0</strong>
+    </div>
+
+    <!-- ===== RESULTADOS ===== -->
+    <div th:if="${descripcionConsulta}" class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <i class="bi bi-table"></i> Resultado — <span th:text="${descripcionConsulta}">consulta</span>
+        </div>
+
+        <!-- Resultado de citas -->
+        <div class="table-responsive" th:if="${resultadoCitas != null}">
+            <table class="table table-striped mb-0 align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre del Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Fecha</th>
+                    <th>Costo</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="registro : ${resultadoCitas}">
+                    <td th:text="${registro.id}">1</td>
+                    <td th:text="${registro.pacienteNombre}">Paciente</td>
+                    <td th:text="${registro.especialidad}">Especialidad</td>
+                    <td th:text="${registro.fecha != null} ? ${#temporals.format(registro.fecha, 'dd/MM/yyyy')} : '-'">-</td>
+                    <td th:text="${registro.costo != null} ? ${#numbers.formatDecimal(registro.costo, 1, 'COMMA', 2, 'POINT')} : '-'">0</td>
+                    <td>
+                        <span class="badge" th:classappend="${registro.activa} ? 'bg-success' : 'bg-secondary'"
+                              th:text="${registro.activa} ? 'Activa' : 'Inactiva'">Activa</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(resultadoCitas)}">
+                    <td colspan="6" class="text-center text-secondary py-4">
+                        La consulta no devolvió resultados.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Resultado de usuarios -->
+        <div class="table-responsive" th:if="${resultadoUsuarios != null}">
+            <table class="table table-striped mb-0 align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Correo electrónico</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="registro : ${resultadoUsuarios}">
+                    <td th:text="${registro.id}">1</td>
+                    <td th:text="${registro.nombre}">Nombre</td>
+                    <td th:text="${registro.email}">correo</td>
+                    <td>
+                        <span class="badge bg-info text-dark"
+                              th:text="${registro.rol != null} ? ${registro.rol.nombre} : 'SIN ROL'">ROL</span>
+                    </td>
+                    <td>
+                        <span class="badge" th:classappend="${registro.activo} ? 'bg-success' : 'bg-secondary'"
+                              th:text="${registro.activo} ? 'Activo' : 'Inactivo'">Activo</span>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(resultadoUsuarios)}">
+                    <td colspan="5" class="text-center text-secondary py-4">
+                        La consulta no devolvió resultados.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-light small text-secondary" th:if="${totalUsuariosRol != null}">
+            Total de usuarios con ese rol: <strong th:text="${totalUsuariosRol}">0</strong>
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-calendar-check"></i> <span th:text="${tituloVista}">Detalle</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Identificador</span>
+                        <strong th:text="${cita.id}">1</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Nombre del Paciente</span>
+                        <strong th:text="${cita.pacienteNombre}">Paciente</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Especialidad</span>
+                        <strong th:text="${cita.especialidad}">Especialidad</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Fecha de la Cita</span>
+                        <strong th:text="${cita.fecha != null} ? ${#temporals.format(cita.fecha, 'dd/MM/yyyy')} : '-'">-</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Costo</span>
+                        <strong th:text="${cita.costo != null} ? ${#numbers.formatDecimal(cita.costo, 1, 'COMMA', 2, 'POINT')} : '-'">0</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-secondary">Estado</span>
+                        <span class="badge" th:classappend="${cita.activa} ? 'bg-success' : 'bg-secondary'"
+                              th:text="${cita.activa} ? 'Activa' : 'Inactiva'">Activa</span>
+                    </li>
+                </ul>
+                <div class="card-body d-flex justify-content-between">
+                    <a class="btn btn-outline-secondary" th:href="@{/citas}">
+                        <i class="bi bi-arrow-left"></i> Volver al listado
+                    </a>
+                    <a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
+                       th:href="@{/citas/editar/{id}(id=${cita.id})}">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

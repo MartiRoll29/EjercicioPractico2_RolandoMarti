@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/plantilla :: cabecera(${tituloVista})}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado(${tituloVista})}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-calendar-plus"></i> <span th:text="${tituloVista}">Formulario</span>
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/citas/guardar}" th:object="${cita}" method="post">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-3">
+                            <label for="pacienteNombre" class="form-label">Nombre del Paciente</label>
+                            <input type="text" class="form-control" id="pacienteNombre"
+                                   th:field="*{pacienteNombre}" maxlength="150" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="especialidad" class="form-label">Especialidad</label>
+                            <input type="text" class="form-control" id="especialidad"
+                                   th:field="*{especialidad}" maxlength="100" required
+                                   placeholder="Cardiología, Dermatología, ...">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha" class="form-label">Fecha de la Cita</label>
+                                <input type="date" class="form-control" id="fecha" th:field="*{fecha}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="costo" class="form-label">Costo</label>
+                                <input type="number" step="0.01" min="0" class="form-control"
+                                       id="costo" th:field="*{costo}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="activa" th:field="*{activa}">
+                            <label class="form-check-label" for="activa">Cita activa</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-outline-secondary" th:href="@{/citas}">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>

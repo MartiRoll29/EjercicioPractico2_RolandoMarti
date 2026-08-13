@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos/plantilla :: cabecera('Acceso denegado')}"></head>
+<body>
+
+<header th:replace="~{fragmentos/plantilla :: encabezado('Acceso denegado')}"></header>
+<nav th:replace="~{fragmentos/plantilla :: barraNavegacion}"></nav>
+
+<main class="container my-5">
+    <div class="alert alert-danger shadow-sm">
+        <h4 class="alert-heading"><i class="bi bi-shield-exclamation"></i> Acceso denegado</h4>
+        <p class="mb-0">Su rol no cuenta con los permisos necesarios para ingresar a esta sección.</p>
+    </div>
+    <a class="btn btn-primary" th:href="@{/inicio}">
+        <i class="bi bi-house-door"></i> Volver al inicio
+    </a>
+</main>
+
+<footer th:replace="~{fragmentos/plantilla :: pie}"></footer>
+<div th:replace="~{fragmentos/plantilla :: guiones}"></div>
+
+</body>
+</html>
