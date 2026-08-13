@@ -21,6 +21,8 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Clase principal: necesaria para ejecutar el proyecto desde NetBeans -->
+        <start-class>com.medicare.MediCareApplication</start-class>
     </properties>
 
     <dependencies>
