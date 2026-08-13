@@ -9,9 +9,9 @@
 <main class="container my-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h4 mb-0"><i class="bi bi-people"></i> <span th:text="${tituloVista}">Usuarios</span></h2>
+        <h2 class="h4 mb-0"><span th:text="${tituloVista}">Usuarios</span></h2>
         <a class="btn btn-primary" th:href="@{/admin/usuarios/nuevo}">
-            <i class="bi bi-plus-circle"></i> Nuevo Usuario
+            Nuevo Usuario
         </a>
     </div>
 
@@ -54,19 +54,13 @@
                     <td th:text="${registro.fechaCreacion != null} ? ${#temporals.format(registro.fechaCreacion, 'dd/MM/yyyy HH:mm')} : '-'">-</td>
                     <td class="text-end text-nowrap">
                         <a class="btn btn-sm btn-outline-secondary"
-                           th:href="@{/admin/usuarios/detalle/{id}(id=${registro.id})}" title="Ver detalle">
-                            <i class="bi bi-eye"></i>
-                        </a>
+                           th:href="@{/admin/usuarios/detalle/{id}(id=${registro.id})}" title="Ver detalle">Ver</a>
                         <a class="btn btn-sm btn-outline-primary"
-                           th:href="@{/admin/usuarios/editar/{id}(id=${registro.id})}" title="Editar">
-                            <i class="bi bi-pencil"></i>
-                        </a>
+                           th:href="@{/admin/usuarios/editar/{id}(id=${registro.id})}" title="Editar">Editar</a>
                         <form class="d-inline" method="post"
                               th:action="@{/admin/usuarios/eliminar/{id}(id=${registro.id})}"
                               onsubmit="return confirm('¿Desea eliminar este usuario?');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">Eliminar</button>
                         </form>
                     </td>
                 </tr>

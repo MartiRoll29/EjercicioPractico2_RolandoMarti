@@ -8,7 +8,7 @@
 
 <main class="container my-5">
 
-    <h2 class="h4 mb-4"><i class="bi bi-search"></i> Consultas Avanzadas (JPA / Hibernate)</h2>
+    <h2 class="h4 mb-4">Consultas Avanzadas</h2>
 
     <div class="row g-4 mb-4">
 
@@ -107,15 +107,14 @@
 
     <!-- Consulta 5: conteo de citas activas -->
     <div class="alert alert-info shadow-sm">
-        <i class="bi bi-info-circle"></i>
-        Consulta 5 — Total de citas médicas activas registradas:
+                Consulta 5 — Total de citas médicas activas registradas:
         <strong th:text="${totalCitasActivas}">0</strong>
     </div>
 
     <!-- ===== RESULTADOS ===== -->
     <div th:if="${descripcionConsulta}" class="card shadow-sm">
         <div class="card-header bg-dark text-white">
-            <i class="bi bi-table"></i> Resultado — <span th:text="${descripcionConsulta}">consulta</span>
+            Resultado — <span th:text="${descripcionConsulta}">consulta</span>
         </div>
 
         <!-- Resultado de citas -->

@@ -12,7 +12,7 @@
         <div class="col-lg-7">
             <div class="card shadow-sm">
                 <div class="card-header bg-dark text-white">
-                    <i class="bi bi-calendar-check"></i> <span th:text="${tituloVista}">Detalle</span>
+                    <span th:text="${tituloVista}">Detalle</span>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between">
@@ -43,11 +43,11 @@
                 </ul>
                 <div class="card-body d-flex justify-content-between">
                     <a class="btn btn-outline-secondary" th:href="@{/citas}">
-                        <i class="bi bi-arrow-left"></i> Volver al listado
+                        Volver al listado
                     </a>
                     <a class="btn btn-primary" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
                        th:href="@{/citas/editar/{id}(id=${cita.id})}">
-                        <i class="bi bi-pencil"></i> Editar
+                        Editar
                     </a>
                 </div>
             </div>

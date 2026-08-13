@@ -11,13 +11,13 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="h4 mb-1"><i class="bi bi-calendar-heart"></i> <span th:text="${tituloVista}">Citas</span></h2>
+            <h2 class="h4 mb-1"><span th:text="${tituloVista}">Citas</span></h2>
             <span class="text-secondary small">
                 Citas activas: <strong th:text="${totalCitasActivas}">0</strong>
             </span>
         </div>
         <a class="btn btn-primary" th:href="@{/citas/nuevo}" sec:authorize="hasAnyRole('ADMIN','MEDICO')">
-            <i class="bi bi-plus-circle"></i> Nueva Cita
+            Nueva Cita
         </a>
     </div>
 
@@ -57,19 +57,13 @@
                     </td>
                     <td class="text-end text-nowrap">
                         <a class="btn btn-sm btn-outline-secondary"
-                           th:href="@{/citas/detalle/{id}(id=${registro.id})}" title="Ver detalle">
-                            <i class="bi bi-eye"></i>
-                        </a>
+                           th:href="@{/citas/detalle/{id}(id=${registro.id})}" title="Ver detalle">Ver</a>
                         <a class="btn btn-sm btn-outline-primary" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
-                           th:href="@{/citas/editar/{id}(id=${registro.id})}" title="Editar">
-                            <i class="bi bi-pencil"></i>
-                        </a>
+                           th:href="@{/citas/editar/{id}(id=${registro.id})}" title="Editar">Editar</a>
                         <form class="d-inline" method="post" sec:authorize="hasAnyRole('ADMIN','MEDICO')"
                               th:action="@{/citas/eliminar/{id}(id=${registro.id})}"
                               onsubmit="return confirm('¿Desea eliminar esta cita médica?');">
-                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar">Eliminar</button>
                         </form>
                     </td>
                 </tr>
