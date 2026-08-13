@@ -1,4 +1,8 @@
 -- Script de base de datos para MediCare
+-- Importar con codificacion UTF-8 para conservar los acentos, por ejemplo:
+--   mysql -u root -p --default-character-set=utf8mb4 < medicare.sql
+
+SET NAMES utf8mb4;
 
 DROP DATABASE IF EXISTS medicare;
 CREATE DATABASE medicare
