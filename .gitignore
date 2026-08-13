@@ -16,6 +16,10 @@ bin/
 # Logs
 *.log
 
+# Configuracion local con credenciales reales (NO versionar)
+application-local.properties
+src/main/resources/application-local.properties
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
